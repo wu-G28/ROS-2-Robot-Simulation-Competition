@@ -13,6 +13,7 @@
 #include "curve.h"
 
 namespace planning
-{ 
+{
 
-}  namespace planning
+
+}  //namespace planning
