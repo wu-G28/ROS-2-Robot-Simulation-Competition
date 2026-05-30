@@ -1,0 +1,7 @@
+#ifndef POLYNOMIAL_CURVE_H_
+#define POLYNOMIAL_CURVE_H_
+
+
+
+
+#endif // POLYNOMIAL_H_

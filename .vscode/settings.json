@@ -1,0 +1,24 @@
+{
+  // 保存时自动格式化
+  "editor.formatOnSave": true,
+  
+  // C/C++ 相关设置
+  "C_Cpp.clang_format_fallbackStyle": "file",  // 使用项目中的 .clang-format 文件
+  "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+  
+  // 默认格式化器设置为 clang-format
+  "[cpp]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  "[c]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  
+  // Tab 配置(与 .clang-format 保持一致)
+  "editor.insertSpaces": false,
+  "editor.tabSize": 4,
+  
+  // 其他推荐设置
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true
+}

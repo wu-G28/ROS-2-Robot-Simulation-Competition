@@ -1,0 +1,34 @@
+---
+# 基于 LLVM 风格，但根据项目需求进行定制
+BasedOnStyle: LLVM
+
+# 缩进配置
+UseTab: ForIndentation          # 使用 Tab 进行缩进
+IndentWidth: 4                  # Tab 宽度为 4 个空格
+ContinuationIndentWidth: 8      # 续行缩进为 2 个 Tab
+
+# 大括号风格 - 换行
+BreakBeforeBraces: Allman       # 大括号单独一行
+
+# 每行最大字符数
+ColumnLimit: 100                # 每行最多 100 个字符
+
+# 指针和引用对齐 - 靠近变量名
+PointerAlignment: Left          # * 和 & 靠近变量名
+
+# 其他常用配置
+SpaceAfterCStyleCast: false     # C 风格转换后不加空格
+SpaceBeforeAssignmentOperators: true  # 赋值运算符前加空格
+ReflowComments: true            # 自动调整注释格式
+SortIncludes: true              # 自动排序 include
+AllowShortIfStatementsOnASingleLine: false  # if 语句不压缩到一行
+AllowShortFunctionsOnASingleLine: Empty     # 只允许空函数在一行
+AllowShortCaseLabelsOnASingleLine: false    # case 标签不压缩到一行
+AllowShortBlocksOnASingleLine: false        # 代码块不压缩到一行
+AllowShortLoopsOnASingleLine: false         # 循环语句不压缩到一行
+
+# 命名空间缩进
+NamespaceIndentation: Inner     # 命名空间内部缩进
+
+# Lambda 表达式配置
+LambdaBodyIndentation: Signature  # Lambda 体相对于签名缩进

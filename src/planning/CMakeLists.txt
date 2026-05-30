@@ -1,9 +1,25 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.22.1)
 project(planning)
 
-if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+#设置c和c++标准
+if(NOT CMAKE_C_STANDARD)
+  set(CMAKE_C_STANDARD 99)
+endif()
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
+endif()
+
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
+
+# 设置预编译指令, 生成compile_commands.json
+# 然后让c_cpp_properties.json读取这个文件, 防止预编译找不到cmake中定义的宏而报错
+# c_cpp_properties.json中加上"compileCommands": "${workspaceFolder}/build/compile_commands.json"来读取这个文件
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# 设置包名, 让子目录节点安装时使用
+set(PLANNING_PACKAGE_NAME ${PROJECT_NAME})
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
