@@ -21,6 +21,7 @@ PointerAlignment: Left # * 和 & 靠近变量名
 SpaceAfterCStyleCast: false # C 风格转换后不加空格
 SpaceBeforeAssignmentOperators: true # 赋值运算符前加空格
 ReflowComments: true # 自动调整注释格式
+AlignTrailingComments: true # 对齐相邻行的行尾注释
 SpacesBeforeTrailingComments: 2 # 行尾注释前加 2 个空格
 SpacesInLineCommentPrefix: 1 # // 后至少 1 个空格
 SortIncludes: true # 自动排序 include

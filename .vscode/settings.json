@@ -16,5 +16,6 @@
   "editor.tabSize": 4,
   // 其他推荐设置
   "files.trimTrailingWhitespace": true,
-  "files.insertFinalNewline": true
+  "files.insertFinalNewline": true,
+  "cmake.sourceDirectory": "/home/pi/ROS-2-Robot-Simulation-Competition/src/base_msgs"
 }
