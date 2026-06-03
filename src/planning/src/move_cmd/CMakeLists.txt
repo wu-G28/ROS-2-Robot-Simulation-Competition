@@ -11,11 +11,11 @@ set(DEPENDS
 )
 
 #添加节点
-add_executalbe(car_move_cmd
+add_executable(car_move_cmd
   ${CMAKE_CURRENT_SOURCE_DIR}/car_move_cmd.cpp
 )
 
-add_executalbe(obs_move_cmd
+add_executable(obs_move_cmd
   ${CMAKE_CURRENT_SOURCE_DIR}/obs_move_cmd.cpp
 )
 

@@ -17,5 +17,20 @@
   // 其他推荐设置
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
-  "cmake.sourceDirectory": "/home/pi/ROS-2-Robot-Simulation-Competition/src/base_msgs"
+  "cmake.sourceDirectory": "/home/pi/ROS-2-Robot-Simulation-Competition/src/base_msgs",
+  "files.watcherExclude": {
+    "**/build/**": true,
+    "**/install/**": true,
+    "**/log/**": true
+  },
+  "search.exclude": {
+    "**/build": true,
+    "**/install": true,
+    "**/log": true
+  },
+  "C_Cpp.files.exclude": {
+    "**/build": true,
+    "**/install": true,
+    "**/log": true
+  }
 }

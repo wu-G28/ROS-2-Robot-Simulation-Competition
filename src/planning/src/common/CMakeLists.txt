@@ -43,7 +43,7 @@ ament_target_dependencies(${math_target}
 )
 
 target_link_libraries(${config_target}
-    yaml_cpp
+    yaml-cpp
 )
 
 target_link_libraries(${math_target}

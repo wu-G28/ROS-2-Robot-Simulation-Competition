@@ -26,9 +26,9 @@ include_directories(
   /usr/local/include/eigen-3.4.0
   src/common/config_reader
   src/common/math
+  src/decision_center
   src/pnc_map_creator
-  src/pnc_map_creator/pnc_map_straight
-  src/pnc_map_creator/pnc_map_sturn
+  src/pnc_map_creator/pnc_map_global
   src/global_planner
   src/global_planner/global_planner_normal
   src/local_planner
@@ -37,7 +37,7 @@ include_directories(
   src/reference_line
   src/vehicle_info
   src/vehicle_info/main_car
-  src/vehicle_info/obs_car
+  src/vehicle_info/obs
   src/planning_process
   src/move_cmd
 )

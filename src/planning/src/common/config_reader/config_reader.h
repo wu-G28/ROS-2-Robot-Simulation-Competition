@@ -6,15 +6,94 @@
 #include <unordered_map>
 #include <yaml-cpp/yaml.h>
 
-namespace planning
+namespace Planning
 {
+    struct VehicleStruct  //车辆
+    {
+        int id_ = 0;
+        std::string frame_ = ""; //序号
+        double length_ = 0.0;    //长
+        double width_ = 0.0;     //宽
+        double x_ = 0.0;           //x
+        double y_ = 0.0;           //y
+        double pose_theat_ = 0.0;    //航向角
+        double speed_ori_ = 0.0;     //初速度
+    };
+
+    struct PNCMapStruct  //地图
+    {
+        std::string frame_ = ""; // 序号
+        double road_length_ = 0.0; //道路长度
+        double road_half_width_ = 0.0; //车道半宽度
+        double segment_len_ = 0.0;  // 段长度
+        double speed_limit_ = 0.0; //限速
+    };
+
+    struct GlobalPathStruct // 全局路径
+    {
+        int type_ = 0; //类型
+    };
+
+    struct ReferLineStruct  // 参考线
+    {
+        int type_ = 0; //类型
+        double front_size_ = 0.0; //前方点数
+        double back_size_ = 0.0; //后方点数
+    };
+
+    struct LocalPathStruct // 局部路径
+    {
+        int curve_type_ = 0; // 曲线类型
+        double path_size_ = 0.0; //路径点数
+    };
+
+    struct LocalSpeedsStruct //速度
+    {
+        int speed_size_ = 0; //速度点数
+    };
+
+    struct DecisionStruct //决策
+    {
+        double safe_dis_l_ = 0.0; //侧向安全距离
+        double safe_dis_s_ = 0.0; //纵向安全距离
+    };
+
+    struct ProcessStruct  //总流程处理
+    {
+        double obs_dis_ = 0.0; //考虑障碍物距离
+    };
+
     class ConfigReader  // 配置文件读取器
     {
     public:
         ConfigReader();
 
     private:
+        YAML::Node planning_config;
+
+        // 车辆参数
+        VehicleStruct main_car_;
+
+        //地图参数
+        PNCMapStruct pnc_map_;
+
+        //全局路径参数
+        GlobalPathStruct global_path_;
+
+        //参考线参数
+        ReferLineStruct refer_line_;
+
+        //局部路径参数
+        LocalPathStruct local_path_;
+
+        //局部速度参数
+        LocalSpeedsStruct local_speeds_;
+
+        //决策参数
+        DecisionStruct decision_;
+
+        //总流程处理参数
+        ProcessStruct process_;
     };
 } // namespace planning
-
 #endif // CONFIG_READER_H_

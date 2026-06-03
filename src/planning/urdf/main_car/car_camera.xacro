@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="photo_front_camera" params="parent x y z length width height">
+    <link name="front_camera_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${width} ${length} ${height}"/>
+        </geometry>
+        <material name="mat_dark_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="${width / 2.0 + 0.003} ${length * 0.28} 0.005" rpy="0 ${pi / 2.0} 0"/>
+        <geometry>
+          <cylinder radius="0.023" length="0.01"/>
+        </geometry>
+        <material name="mat_glass"/>
+      </visual>
+      <visual>
+        <origin xyz="${width / 2.0 + 0.003} 0 0.005" rpy="0 ${pi / 2.0} 0"/>
+        <geometry>
+          <cylinder radius="0.023" length="0.01"/>
+        </geometry>
+        <material name="mat_glass"/>
+      </visual>
+      <visual>
+        <origin xyz="${width / 2.0 + 0.003} ${-length * 0.28} 0.005" rpy="0 ${pi / 2.0} 0"/>
+        <geometry>
+          <cylinder radius="0.023" length="0.01"/>
+        </geometry>
+        <material name="mat_glass"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${width} ${length} ${height}"/>
+        </geometry>
+      </collision>
+      <xacro:box_inertial mass="0.38" x="${width}" y="${length}" z="${height}"/>
+    </link>
+
+    <joint name="front_camera_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="front_camera_link"/>
+      <origin xyz="${x} ${y} ${z}" rpy="0 0 0"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="photo_screen" params="parent x y z length width height">
+    <link name="top_screen_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${length} ${width} ${height}"/>
+        </geometry>
+        <material name="mat_black"/>
+      </visual>
+      <visual>
+        <origin xyz="0 0 ${height / 2.0 + 0.002}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${length * 0.92} ${width * 0.82} 0.003"/>
+        </geometry>
+        <material name="mat_glass"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${length} ${width} ${height}"/>
+        </geometry>
+      </collision>
+      <xacro:box_inertial mass="0.12" x="${length}" y="${width}" z="${height}"/>
+    </link>
+
+    <joint name="top_screen_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="top_screen_link"/>
+      <origin xyz="${x} ${y} ${z}" rpy="0 0 0.05"/>
+    </joint>
+  </xacro:macro>
+</robot>

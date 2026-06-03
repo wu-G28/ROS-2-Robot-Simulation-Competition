@@ -8,7 +8,7 @@
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
-
+  <!--构建依赖-->
   <depend>rclcpp</depend>
   <depend>tf2</depend>
   <depend>tf2_ros</depend>
@@ -18,9 +18,9 @@
   <depend>base_msgs</depend>
   <depend>yaml_cpp</depend>
   <depend>ament_index_cpp</depend>
-
+  <!--执行依赖-->
   <exec_depend>ros2launch</exec_depend>
-  <exec_depend>xaroc</exec_depend>
+  <exec_depend>xacro</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>joint_state_publisher</exec_depend>
   <exec_depend>rviz2</exec_depend>
