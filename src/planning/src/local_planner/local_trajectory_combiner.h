@@ -19,4 +19,4 @@ namespace Planning
 	};
 }//namespace Planning
 
-#endif LOCAL_TRAJECTORY_COMBINER_H
+#endif // LOCAL_TRAJECTORY_COMBINER_H

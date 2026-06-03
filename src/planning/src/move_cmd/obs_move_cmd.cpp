@@ -22,3 +22,12 @@ namespace Planning
 		RCLCPP_INFO(this->get_logger(), "obs_move_cmd created");
 	}
 }//namespace Planning
+
+int main(int argc, char *argv[])
+{
+	rclcpp::init(argc, argv);
+	auto node = std::make_shared<Planning::ObsMoveCmd>();
+	rclcpp::spin(node);
+	rclcpp::shutdown();
+	return 0;
+}

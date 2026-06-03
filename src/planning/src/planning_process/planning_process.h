@@ -28,9 +28,11 @@ namespace Planning
 	{
 	public:
 		PlanningProcess();
+		bool process();
 
 	private:
+		std::unique_ptr<ConfigReader> process_config_; //配置
 	};
 } //namespace Planning
 
-#endif PLANNING_ROCESS_H_
+#endif // PLANNING_PROCESS_H_

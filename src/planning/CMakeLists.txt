@@ -69,7 +69,7 @@ add_subdirectory(src/move_cmd)
 
 # 安装辅助目录
 install(DIRECTORY
-  config launch urdf rviz
+  ../config launch urdf rviz
   DESTINATION share/${PROJECT_NAME})
 
 if(BUILD_TESTING)

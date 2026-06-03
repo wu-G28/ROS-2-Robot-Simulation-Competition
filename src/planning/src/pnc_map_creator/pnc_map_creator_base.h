@@ -6,10 +6,9 @@
 
 namespace Planning
 {
-	class PNCMapcreatorBase
+	class PNCMapCreatorBase // pnc_map创建器基类
 	{
 	public:
-		PNCMapcreatorBase();
 	};
 }//namespace Planning
-#endif
+#endif //PNC_MAP_CREATOR_BASE_H

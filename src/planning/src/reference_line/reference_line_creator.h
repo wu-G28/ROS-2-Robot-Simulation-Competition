@@ -16,4 +16,4 @@ namespace Planning
 	private:
 	};
 }//namespace Planning
-#endif REFERENCE_LINE_CREATOR_H
+#endif // REFERENCE_LINE_CREATOR_H

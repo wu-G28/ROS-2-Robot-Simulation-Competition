@@ -17,4 +17,4 @@ namespace Planning
 	private:
 	};
 }//namespace Planning
-#endif REFERENCE_LINE_SMOOTHER_H_
+#endif // REFERENCE_LINE_SMOOTHER_H_

@@ -101,7 +101,7 @@ namespace Planning
 
         //planning_process
         void read_planning_process_config();
-        inline ProcessStruct planning_process() const { return process_; }
+        inline ProcessStruct process() const { return process_; }
 
         //move_cmd
         void read_move_cmd_config();

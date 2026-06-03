@@ -15,4 +15,4 @@ namespace Planning
 	private:
 	};
 }//namespace Planning
-#endif OBS_MOVE_CMD_H
+#endif // OBS_MOVE_CMD_H
