@@ -68,11 +68,51 @@ namespace Planning
     public:
         ConfigReader();
 
+        //vehicle
+        void read_vehicle_config(VehicleStruct &vehicle, const std::string &name);
+        void read_vehicle_config();
+        inline VehicleStruct main_car() const { return main_car_; }
+        inline VehicleStruct obs() const { return obs_ ;}
+        inline std::unordered_map<int, VehicleStruct> obs_pair() const { return obs_pair_; }
+
+        //pnc_map
+        void read_pnc_map_config();
+        inline PNCMapStruct pnc_map() const { return pnc_map_; }
+
+        //global_path
+        void read_global_path_config();
+        inline GlobalPathStruct global_path() const { return global_path_; }
+
+        //reference_line
+        void read_reference_line_config();
+        inline ReferLineStruct reference_line() const { return refer_line_; }
+
+        //local_path
+        void read_local_path_config();
+        inline LocalPathStruct local_path() const { return local_path_; }
+
+        //local_speeds
+        void read_local_speeds_config();
+        inline LocalSpeedsStruct local_speeds() const { return local_speeds_; }
+
+        //decision
+        void read_decision_config();
+        inline DecisionStruct decision() const { return decision_; }
+
+        //planning_process
+        void read_planning_process_config();
+        inline ProcessStruct planning_process() const { return process_; }
+
+        //move_cmd
+        void read_move_cmd_config();
+
     private:
         YAML::Node planning_config;
 
         // 车辆参数
         VehicleStruct main_car_;
+        VehicleStruct obs_;
+        std::unordered_map<int,VehicleStruct> obs_pair_;
 
         //地图参数
         PNCMapStruct pnc_map_;

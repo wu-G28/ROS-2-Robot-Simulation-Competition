@@ -17,7 +17,7 @@
   // 其他推荐设置
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
-  "cmake.sourceDirectory": "/home/pi/ROS-2-Robot-Simulation-Competition/src/base_msgs",
+  "cmake.sourceDirectory": "/home/wu/planning_with_ROS2_course/ROS-2-Robot-Simulation-Competition/src/base_msgs",
   "files.watcherExclude": {
     "**/build/**": true,
     "**/install/**": true,
@@ -32,5 +32,18 @@
     "**/build": true,
     "**/install": true,
     "**/log": true
-  }
+  },
+  "python.autoComplete.extraPaths": [
+    "/home/wu/planning_with_ROS2_course/ROS-2-Robot-Simulation-Competition/install/data_plot/lib/python3.10/site-packages",
+    "/home/wu/planning_with_ROS2_course/ROS-2-Robot-Simulation-Competition/install/base_msgs/local/lib/python3.10/dist-packages",
+    "/opt/ros/humble/lib/python3.10/site-packages",
+    "/opt/ros/humble/local/lib/python3.10/dist-packages"
+  ],
+  "python.analysis.extraPaths": [
+    "/home/wu/planning_with_ROS2_course/ROS-2-Robot-Simulation-Competition/install/data_plot/lib/python3.10/site-packages",
+    "/home/wu/planning_with_ROS2_course/ROS-2-Robot-Simulation-Competition/install/base_msgs/local/lib/python3.10/dist-packages",
+    "/opt/ros/humble/lib/python3.10/site-packages",
+    "/opt/ros/humble/local/lib/python3.10/dist-packages"
+  ],
+  "ROS2.distro": "humble"
 }
