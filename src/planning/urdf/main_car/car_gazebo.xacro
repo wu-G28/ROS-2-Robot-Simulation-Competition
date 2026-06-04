@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ================================================================
+       Gazebo 仿真插件 — 匹配当前 URDF 的 link/joint 命名
+       ================================================================ -->
+
+  <!-- ==================== 差速驱动 (四轮) ==================== -->
+  <gazebo>
+    <plugin name="diff_drive" filename="libgazebo_ros_diff_drive.so">
+      <ros>
+        <namespace>/</namespace>
+        <remapping>cmd_vel:=cmd_vel</remapping>
+        <remapping>odom:=odom</remapping>
+      </ros>
+      <update_rate>50</update_rate>
+
+      <!-- 左轮 -->
+      <left_joint>left_front_rolling</left_joint>
+      <left_joint>left_rear_rolling</left_joint>
+      <!-- 右轮 -->
+      <right_joint>right_front_rolling</right_joint>
+      <right_joint>right_rear_rolling</right_joint>
+
+      <!-- wheel_joint_y = 1.0 → separation = 2.0 -->
+      <wheel_separation>2.0</wheel_separation>
+      <!-- wheel_radius = 0.3 -->
+      <wheel_radius>0.3</wheel_radius>
+
+      <wheel_acceleration>1.5</wheel_acceleration>
+      <wheel_torque>10.0</wheel_torque>
+
+      <odometry_frame>odom</odometry_frame>
+      <robot_base_frame>base_footprint</robot_base_frame>
+      <odometry_topic>odom</odometry_topic>
+      <publish_odom_tf>true</publish_odom_tf>
+      <publish_wheel_tf>false</publish_wheel_tf>
+    </plugin>
+  </gazebo>
+
+  <!-- ==================== 激光雷达 ==================== -->
+  <gazebo reference="radar">
+    <sensor name="lidar_sensor" type="ray">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>false</visualize>
+      <update_rate>10</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>360</samples>
+            <resolution>1</resolution>
+            <min_angle>-3.14159</min_angle>
+            <max_angle>3.14159</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.12</min>
+          <max>12.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+      <plugin name="laser_controller" filename="libgazebo_ros_ray_sensor.so">
+        <ros><namespace>/</namespace><remapping>out:=scan</remapping></ros>
+        <output_type>sensor_msgs/LaserScan</output_type>
+        <frame_name>radar</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- ==================== RGB 相机 ==================== -->
+  <gazebo reference="camera">
+    <sensor name="front_camera_sensor" type="camera">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>false</visualize>
+      <update_rate>30</update_rate>
+      <camera>
+        <horizontal_fov>1.0472</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.05</near>
+          <far>50.0</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <ros><namespace>/</namespace>
+          <remapping>image_raw:=camera/image_raw</remapping>
+          <remapping>camera_info:=camera/camera_info</remapping></ros>
+        <frame_name>camera</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- ==================== 车轮摩擦 ==================== -->
+  <gazebo reference="left_front"><mu1>0.8</mu1><mu2>0.8</mu2><kp>1e6</kp><kd>100</kd><maxVel>1.0</maxVel><minDepth>0.001</minDepth></gazebo>
+  <gazebo reference="right_front"><mu1>0.8</mu1><mu2>0.8</mu2><kp>1e6</kp><kd>100</kd><maxVel>1.0</maxVel><minDepth>0.001</minDepth></gazebo>
+  <gazebo reference="left_rear"><mu1>0.8</mu1><mu2>0.8</mu2><kp>1e6</kp><kd>100</kd><maxVel>1.0</maxVel><minDepth>0.001</minDepth></gazebo>
+  <gazebo reference="right_rear"><mu1>0.8</mu1><mu2>0.8</mu2><kp>1e6</kp><kd>100</kd><maxVel>1.0</maxVel><minDepth>0.001</minDepth></gazebo>
+
+  <gazebo reference="base_link"><mu1>0.3</mu1><mu2>0.3</mu2></gazebo>
+
+</robot>

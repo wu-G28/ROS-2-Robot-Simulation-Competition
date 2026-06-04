@@ -1,199 +1,47 @@
-<?xml version="1.0"?>
+<!-- 底盘 -->
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:macro name="box_inertial" params="mass x y z">
-    <inertial>
-      <mass value="${mass}"/>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <inertia
-        ixx="${mass * (y * y + z * z) / 12.0}"
-        ixy="0"
-        ixz="0"
-        iyy="${mass * (x * x + z * z) / 12.0}"
-        iyz="0"
-        izz="${mass * (x * x + y * y) / 12.0}"/>
-    </inertial>
-  </xacro:macro>
+    <!-- 车体尺寸 -->
+    <xacro:property name="car_length" value="3.0"/>
+    <xacro:property name="car_width" value="1.5"/>
+    <xacro:property name="car_height" value="0.6"/>
 
-  <xacro:macro name="cylinder_inertial_z" params="mass radius length">
-    <inertial>
-      <mass value="${mass}"/>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <inertia
-        ixx="${mass * (3.0 * radius * radius + length * length) / 12.0}"
-        ixy="0"
-        ixz="0"
-        iyy="${mass * (3.0 * radius * radius + length * length) / 12.0}"
-        iyz="0"
-        izz="${mass * radius * radius / 2.0}"/>
-    </inertial>
-  </xacro:macro>
+    <!-- 离地间隙 -->
+    <xacro:property name="ground_height" value="0.2"/>
 
-  <xacro:macro name="photo_standoff" params="name parent x y z height radius">
-    <link name="${name}_link">
-      <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <cylinder radius="${radius}" length="${height}"/>
-        </geometry>
-        <material name="mat_aluminium"/>
-      </visual>
-      <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <cylinder radius="${radius}" length="${height}"/>
-        </geometry>
-      </collision>
-      <xacro:cylinder_inertial_z mass="0.03" radius="${radius}" length="${height}"/>
-    </link>
+    <!-- 包含子文件, 要在参数定义之后, 子文件才能使用父文件的参数 -->
+    <xacro:include filename="car_wheels.xacro"/>
 
-    <joint name="${name}_joint" type="fixed">
-      <parent link="${parent}"/>
-      <child link="${name}_link"/>
-      <origin xyz="${x} ${y} ${z}" rpy="0 0 0"/>
-    </joint>
-  </xacro:macro>
+    <!-- 颜色 -->
+    <material name="yellow">
+        <color rgba="0.9 0.6 0.0 0.7"/>
+    </material>
 
-  <xacro:macro name="photo_car_base" params="base_length base_width base_height ground_clearance plate_length plate_width plate_thickness plate_z top_plate_length top_plate_width top_plate_thickness top_plate_z">
+    <!-- 根坐标 -->
+    <link name="map"/>
+
+    <!-- 底盘在map的投影点 -->
+    <link name="base_footprint"/>
+
+    <!-- 底盘 -->
     <link name="base_link">
-      <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <box size="${base_length} ${base_width} ${base_height}"/>
-        </geometry>
-        <material name="mat_black"/>
-      </visual>
-      <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <box size="${base_length} ${base_width} ${base_height}"/>
-        </geometry>
-      </collision>
-      <xacro:box_inertial mass="2.6" x="${base_length}" y="${base_width}" z="${base_height}"/>
+        <visual>
+            <geometry>
+                <box size="${car_length} ${car_width} ${car_height}"/>
+            </geometry>
+            <material name="yellow"/>
+        </visual>
     </link>
 
-    <link name="middle_plate_link">
-      <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <box size="${plate_length} ${plate_width} ${plate_thickness}"/>
-        </geometry>
-        <material name="mat_aluminium"/>
-      </visual>
-      <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <box size="${plate_length} ${plate_width} ${plate_thickness}"/>
-        </geometry>
-      </collision>
-      <xacro:box_inertial mass="0.35" x="${plate_length}" y="${plate_width}" z="${plate_thickness}"/>
-    </link>
-
-    <joint name="middle_plate_joint" type="fixed">
-      <parent link="base_link"/>
-      <child link="middle_plate_link"/>
-      <origin xyz="0 0 ${plate_z - (ground_clearance + base_height / 2.0)}" rpy="0 0 0"/>
+    <!-- 投影点关联到地图 -->
+    <joint name="footprint_to_map" type="fixed">
+        <parent link="map"/>
+        <child link="base_footprint"/>
     </joint>
 
-    <link name="top_plate_link">
-      <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <box size="${top_plate_length} ${top_plate_width} ${top_plate_thickness}"/>
-        </geometry>
-        <material name="mat_aluminium"/>
-      </visual>
-      <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <box size="${top_plate_length} ${top_plate_width} ${top_plate_thickness}"/>
-        </geometry>
-      </collision>
-      <xacro:box_inertial mass="0.25" x="${top_plate_length}" y="${top_plate_width}" z="${top_plate_thickness}"/>
-    </link>
-
-    <joint name="top_plate_joint" type="fixed">
-      <parent link="base_link"/>
-      <child link="top_plate_link"/>
-      <origin xyz="-0.04 0 ${top_plate_z - (ground_clearance + base_height / 2.0)}" rpy="0 0 0"/>
+    <!-- 底盘关联到投影点 -->
+    <joint name="base_to_footprint" type="fixed">
+        <parent link="base_footprint"/>
+        <child link="base_link"/>
+        <origin xyz="0.0 0.0 ${car_height / 2.0 + ground_height}"/>
     </joint>
-
-    <link name="front_sensor_bar_link">
-      <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <box size="0.08 ${base_width + 0.035} 0.095"/>
-        </geometry>
-        <material name="mat_dark_grey"/>
-      </visual>
-      <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <box size="0.08 ${base_width + 0.035} 0.095"/>
-        </geometry>
-      </collision>
-      <xacro:box_inertial mass="0.45" x="0.08" y="${base_width + 0.035}" z="0.095"/>
-    </link>
-
-    <joint name="front_sensor_bar_joint" type="fixed">
-      <parent link="base_link"/>
-      <child link="front_sensor_bar_link"/>
-      <origin xyz="${base_length / 2.0 - 0.018} 0 0.035" rpy="0 0 0"/>
-    </joint>
-
-    <link name="controller_board_link">
-      <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <box size="0.19 0.115 0.016"/>
-        </geometry>
-        <material name="mat_green"/>
-      </visual>
-      <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <box size="0.19 0.115 0.016"/>
-        </geometry>
-      </collision>
-      <xacro:box_inertial mass="0.10" x="0.19" y="0.115" z="0.016"/>
-    </link>
-
-    <joint name="controller_board_joint" type="fixed">
-      <parent link="base_link"/>
-      <child link="controller_board_link"/>
-      <origin xyz="-0.07 -0.16 0.105" rpy="0 0 0"/>
-    </joint>
-
-    <link name="front_battery_link">
-      <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <box size="0.13 0.10 0.07"/>
-        </geometry>
-        <material name="mat_red"/>
-      </visual>
-      <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <box size="0.13 0.10 0.07"/>
-        </geometry>
-      </collision>
-      <xacro:box_inertial mass="0.45" x="0.13" y="0.10" z="0.07"/>
-    </link>
-
-    <joint name="front_battery_joint" type="fixed">
-      <parent link="base_link"/>
-      <child link="front_battery_link"/>
-      <origin xyz="0.235 0.055 -0.01" rpy="0 0 0"/>
-    </joint>
-
-    <xacro:photo_standoff name="front_left_standoff" parent="base_link" x="0.17" y="0.13" z="0.105" height="0.20" radius="0.008"/>
-    <xacro:photo_standoff name="front_right_standoff" parent="base_link" x="0.17" y="-0.13" z="0.105" height="0.20" radius="0.008"/>
-    <xacro:photo_standoff name="rear_left_standoff" parent="base_link" x="-0.18" y="0.13" z="0.105" height="0.20" radius="0.008"/>
-    <xacro:photo_standoff name="rear_right_standoff" parent="base_link" x="-0.18" y="-0.13" z="0.105" height="0.20" radius="0.008"/>
-
-    <xacro:photo_standoff name="front_left_top_standoff" parent="base_link" x="0.10" y="0.105" z="0.245" height="0.14" radius="0.006"/>
-    <xacro:photo_standoff name="front_right_top_standoff" parent="base_link" x="0.10" y="-0.105" z="0.245" height="0.14" radius="0.006"/>
-    <xacro:photo_standoff name="rear_left_top_standoff" parent="base_link" x="-0.18" y="0.105" z="0.245" height="0.14" radius="0.006"/>
-    <xacro:photo_standoff name="rear_right_top_standoff" parent="base_link" x="-0.18" y="-0.105" z="0.245" height="0.14" radius="0.006"/>
-  </xacro:macro>
 </robot>

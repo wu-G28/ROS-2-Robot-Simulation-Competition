@@ -1,0 +1,341 @@
+<?xml version="1.0"?>
+<sdf version="1.7">
+  <world name="factory">
+
+    <!-- ============ 物理引擎 ============ -->
+    <physics type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <gravity>0 0 -9.81</gravity>
+    </physics>
+
+    <!-- ============ 场景光照 (白天) ============ -->
+    <scene>
+      <ambient>0.7 0.7 0.7 1.0</ambient>
+      <background>0.4 0.6 0.9 1.0</background>
+      <shadows>true</shadows>
+
+      <light name="sun" type="directional">
+        <pose>0 0 15 0 0 0</pose>
+        <diffuse>1.0 0.98 0.9 1.0</diffuse>
+        <specular>0.3 0.3 0.3 1.0</specular>
+        <direction>0.3 -0.3 -1</direction>
+        <cast_shadows>true</cast_shadows>
+        <attenuation>
+          <range>50</range>
+          <constant>0.9</constant>
+          <linear>0.01</linear>
+          <quadratic>0.001</quadratic>
+        </attenuation>
+      </light>
+
+      <light name="fill_corridor" type="point">
+        <pose>14 6 2.8 0 0 0</pose>
+        <diffuse>0.5 0.5 0.55 1.0</diffuse>
+        <specular>0.05 0.05 0.05 1.0</specular>
+        <attenuation>
+          <range>20</range>
+          <constant>0.5</constant>
+          <linear>0.05</linear>
+          <quadratic>0.01</quadratic>
+        </attenuation>
+        <cast_shadows>false</cast_shadows>
+      </light>
+
+      <light name="fill_core" type="point">
+        <pose>22 18 2.5 0 0 0</pose>
+        <diffuse>0.6 0.6 0.65 1.0</diffuse>
+        <specular>0.08 0.08 0.08 1.0</specular>
+        <attenuation>
+          <range>15</range>
+          <constant>0.5</constant>
+          <linear>0.05</linear>
+          <quadratic>0.01</quadratic>
+        </attenuation>
+        <cast_shadows>false</cast_shadows>
+      </light>
+
+      <light name="fill_start" type="point">
+        <pose>7 3 2.5 0 0 0</pose>
+        <diffuse>0.45 0.45 0.5 1.0</diffuse>
+        <specular>0.05 0.05 0.05 1.0</specular>
+        <attenuation>
+          <range>12</range>
+          <constant>0.5</constant>
+          <linear>0.05</linear>
+          <quadratic>0.01</quadratic>
+        </attenuation>
+        <cast_shadows>false</cast_shadows>
+      </light>
+    </scene>
+
+    <!-- ============ 地面 ============ -->
+    <model name="factory_floor">
+      <static>true</static>
+      <link name="floor">
+        <collision name="collision">
+          <geometry><box><size>32 24 0.1</size></box></geometry>
+          <surface><friction><ode><mu>0.8</mu><mu2>0.8</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>32 24 0.1</size></box></geometry>
+          <material>
+            <ambient>0.25 0.25 0.25 1.0</ambient>
+            <diffuse>0.35 0.35 0.35 1.0</diffuse>
+          </material>
+        </visual>
+      </link>
+      <pose>14 10 -0.05 0 0 0</pose>
+    </model>
+
+    <!-- ================================================================
+         围墙 — 工厂外围 28m×20m, 高3m, 厚0.2m
+         ================================================================ -->
+
+    <!-- 南墙西段 (入口左侧) -->
+    <model name="wall_exterior_south_west"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>4 0.2 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>4 0.2 3</size></box></geometry>
+          <material><ambient>0.55 0.5 0.45 1</ambient><diffuse>0.65 0.6 0.55 1</diffuse></material></visual></link>
+      <pose>2 0.1 1.5 0 0 0</pose></model>
+
+    <!-- 南墙东段 (入口右侧) -->
+    <model name="wall_exterior_south_east"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>18 0.2 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>18 0.2 3</size></box></geometry>
+          <material><ambient>0.55 0.5 0.45 1</ambient><diffuse>0.65 0.6 0.55 1</diffuse></material></visual></link>
+      <pose>19 0.1 1.5 0 0 0</pose></model>
+
+    <!-- 西墙 -->
+    <model name="wall_exterior_west"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>0.2 20 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.2 20 3</size></box></geometry>
+          <material><ambient>0.55 0.5 0.45 1</ambient><diffuse>0.65 0.6 0.55 1</diffuse></material></visual></link>
+      <pose>0.1 10 1.5 0 0 0</pose></model>
+
+    <!-- 东墙 -->
+    <model name="wall_exterior_east"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>0.2 20 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.2 20 3</size></box></geometry>
+          <material><ambient>0.55 0.5 0.45 1</ambient><diffuse>0.65 0.6 0.55 1</diffuse></material></visual></link>
+      <pose>28.1 10 1.5 0 0 0</pose></model>
+
+    <!-- 北墙 -->
+    <model name="wall_exterior_north"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>28.4 0.2 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>28.4 0.2 3</size></box></geometry>
+          <material><ambient>0.55 0.5 0.45 1</ambient><diffuse>0.65 0.6 0.55 1</diffuse></material></visual></link>
+      <pose>14 20.1 1.5 0 0 0</pose></model>
+
+    <!-- ================================================================
+         内部墙体 — 走廊 + 房间
+         布局说明:
+           ★ 起点 (7, 2) → 向北进入走廊 → 右转(东) → 左转(北) → 核心室
+
+           北走廊           ┌──────────────┐
+           (x=18-22)        │  核心救援室   │
+              ↑             │  (16-26,16-20)│
+              │             └──────┬───────┘
+         ┌────┴────┐              │
+         │控制室    │   东走廊     │
+         │(6-14,   │   (4-22,    │
+         │ 8-14)   │    4-8)     │
+         └─────────┘             │
+              ┌──────────────────┘
+              │ 入口区    │工位A│
+              │(4-10,0-5)│     │
+              └──────────┴─────┘
+         ================================================================ -->
+
+    <!-- === 入口区西墙 === -->
+    <model name="wall_entry_west"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>0.2 5 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.2 5 3</size></box></geometry>
+          <material><ambient>0.45 0.42 0.38 1</ambient><diffuse>0.6 0.55 0.5 1</diffuse></material></visual></link>
+      <pose>4.1 2.5 1.5 0 0 0</pose></model>
+
+    <!-- === 工位A 东墙 === -->
+    <model name="wall_workshop_east"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>0.2 4 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.2 4 3</size></box></geometry>
+          <material><ambient>0.45 0.42 0.38 1</ambient><diffuse>0.6 0.55 0.5 1</diffuse></material></visual></link>
+      <pose>18.1 2 1.5 0 0 0</pose></model>
+
+    <!-- === 工位A 北墙 (也是东走廊南墙的东段) === -->
+    <model name="wall_workshop_north"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>4 0.2 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>4 0.2 3</size></box></geometry>
+          <material><ambient>0.45 0.42 0.38 1</ambient><diffuse>0.6 0.55 0.5 1</diffuse></material></visual></link>
+      <pose>16 4.1 1.5 0 0 0</pose></model>
+
+    <!-- === 东走廊南墙西段 (入口区北墙) === -->
+    <model name="wall_corridor_ew_south_west"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>6 0.2 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>6 0.2 3</size></box></geometry>
+          <material><ambient>0.45 0.42 0.38 1</ambient><diffuse>0.6 0.55 0.5 1</diffuse></material></visual></link>
+      <pose>7 4.1 1.5 0 0 0</pose></model>
+
+    <!-- === 东走廊南墙东段 === -->
+    <model name="wall_corridor_ew_south_east"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>4 0.2 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>4 0.2 3</size></box></geometry>
+          <material><ambient>0.45 0.42 0.38 1</ambient><diffuse>0.6 0.55 0.5 1</diffuse></material></visual></link>
+      <pose>20 4.1 1.5 0 0 0</pose></model>
+
+    <!-- === 东走廊北墙西段 (也是控制室南墙) === -->
+    <model name="wall_corridor_ew_north_west"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>10 0.2 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>10 0.2 3</size></box></geometry>
+          <material><ambient>0.45 0.42 0.38 1</ambient><diffuse>0.6 0.55 0.5 1</diffuse></material></visual></link>
+      <pose>9 8.1 1.5 0 0 0</pose></model>
+
+    <!-- === 东走廊北墙东段 === -->
+    <model name="wall_corridor_ew_north_east"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>4 0.2 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>4 0.2 3</size></box></geometry>
+          <material><ambient>0.45 0.42 0.38 1</ambient><diffuse>0.6 0.55 0.5 1</diffuse></material></visual></link>
+      <pose>20 8.1 1.5 0 0 0</pose></model>
+
+    <!-- === 控制室西墙 === -->
+    <model name="wall_control_west"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>0.2 6 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.2 6 3</size></box></geometry>
+          <material><ambient>0.45 0.42 0.38 1</ambient><diffuse>0.6 0.55 0.5 1</diffuse></material></visual></link>
+      <pose>6.1 11 1.5 0 0 0</pose></model>
+
+    <!-- === 控制室北墙 === -->
+    <model name="wall_control_north"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>8 0.2 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>8 0.2 3</size></box></geometry>
+          <material><ambient>0.45 0.42 0.38 1</ambient><diffuse>0.6 0.55 0.5 1</diffuse></material></visual></link>
+      <pose>10 14.1 1.5 0 0 0</pose></model>
+
+    <!-- === 控制室东墙 (也是北走廊西墙下段) === -->
+    <model name="wall_control_east"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>0.2 6 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.2 6 3</size></box></geometry>
+          <material><ambient>0.45 0.42 0.38 1</ambient><diffuse>0.6 0.55 0.5 1</diffuse></material></visual></link>
+      <pose>14.1 11 1.5 0 0 0</pose></model>
+
+    <!-- === 北走廊西墙上段 === -->
+    <model name="wall_corridor_ns_west_upper"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>0.2 4 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.2 4 3</size></box></geometry>
+          <material><ambient>0.45 0.42 0.38 1</ambient><diffuse>0.6 0.55 0.5 1</diffuse></material></visual></link>
+      <pose>18.1 16 1.5 0 0 0</pose></model>
+
+    <!-- === 北走廊东墙全段 === -->
+    <model name="wall_corridor_ns_east"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>0.2 12 3</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.2 12 3</size></box></geometry>
+          <material><ambient>0.45 0.42 0.38 1</ambient><diffuse>0.6 0.55 0.5 1</diffuse></material></visual></link>
+      <pose>22.1 12 1.5 0 0 0</pose></model>
+
+    <!-- === 核心室南墙西段 === -->
+    <model name="wall_core_south_west"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>4 0.2 3.5</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>4 0.2 3.5</size></box></geometry>
+          <material><ambient>0.5 0.45 0.4 1</ambient><diffuse>0.65 0.58 0.5 1</diffuse></material></visual></link>
+      <pose>18 16.1 1.75 0 0 0</pose></model>
+
+    <!-- === 核心室南墙东段 === -->
+    <model name="wall_core_south_east"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>4 0.2 3.5</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>4 0.2 3.5</size></box></geometry>
+          <material><ambient>0.5 0.45 0.4 1</ambient><diffuse>0.65 0.58 0.5 1</diffuse></material></visual></link>
+      <pose>24 16.1 1.75 0 0 0</pose></model>
+
+    <!-- === 核心室西墙 === -->
+    <model name="wall_core_west"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>0.2 4 3.5</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.2 4 3.5</size></box></geometry>
+          <material><ambient>0.5 0.45 0.4 1</ambient><diffuse>0.65 0.58 0.5 1</diffuse></material></visual></link>
+      <pose>16.1 18 1.75 0 0 0</pose></model>
+
+    <!-- === 核心室东墙 (也是工厂东墙上段) === -->
+    <model name="wall_core_east"><static>true</static>
+      <link name="w"><collision name="c"><geometry><box><size>0.2 4 3.5</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>0.2 4 3.5</size></box></geometry>
+          <material><ambient>0.5 0.45 0.4 1</ambient><diffuse>0.65 0.58 0.5 1</diffuse></material></visual></link>
+      <pose>26.1 18 1.75 0 0 0</pose></model>
+
+    <!-- === 核心室天花板 === -->
+    <model name="core_ceiling"><static>true</static>
+      <link name="c"><collision name="cc"><geometry><box><size>10 4 0.1</size></box></geometry>
+        <surface><friction><ode><mu>0.3</mu><mu2>0.3</mu2></ode></friction></surface></collision>
+        <visual name="cv"><geometry><box><size>10 4 0.1</size></box></geometry>
+          <material><ambient>0.35 0.35 0.35 1</ambient><diffuse>0.45 0.45 0.45 1</diffuse></material></visual></link>
+      <pose>21 18 3.55 0 0 0</pose></model>
+
+    <!-- === 核心室入口上方横梁 === -->
+    <model name="core_entrance_beam"><static>true</static>
+      <link name="b"><collision name="bc"><geometry><box><size>0.2 4.2 0.3</size></box></geometry></collision>
+        <visual name="bv"><geometry><box><size>0.2 4.2 0.3</size></box></geometry>
+          <material><ambient>0.7 0.15 0.1 1</ambient><diffuse>0.8 0.2 0.15 1</diffuse></material></visual></link>
+      <pose>20 16 3.0 0 0 0</pose></model>
+
+    <!-- ============ 障碍物 — 挡住核心室入口 ============ -->
+    <include>
+      <uri>model://pushable_obstacle</uri>
+      <name>entry_obstacle</name>
+      <pose>20 15.5 1.0 0 0 0</pose>
+    </include>
+
+    <!-- ================================================================
+         灾害标识 ×5 (走廊沿线)  +  ×3 (核心室内)
+         ================================================================ -->
+
+    <!-- 标识1: 入口区西墙, 面朝东 -->
+    <include><uri>model://disaster_sign</uri><name>sign_01</name>
+      <pose>4.05 3 1.5 0 0 1.5708</pose></include>
+
+    <!-- 标识2: 东走廊北墙, 面朝南 -->
+    <include><uri>model://disaster_sign</uri><name>sign_02</name>
+      <pose>12 8.05 1.5 0 0 3.1416</pose></include>
+
+    <!-- 标识3: 东走廊南墙, 面朝北 -->
+    <include><uri>model://disaster_sign</uri><name>sign_03</name>
+      <pose>19 3.95 1.5 0 0 0</pose></include>
+
+    <!-- 标识4: 北走廊东墙, 面朝西 -->
+    <include><uri>model://disaster_sign</uri><name>sign_04</name>
+      <pose>22.05 10 1.5 0 0 -1.5708</pose></include>
+
+    <!-- 标识5: 控制室东墙外侧(走廊内), 面朝东 -->
+    <include><uri>model://disaster_sign</uri><name>sign_05</name>
+      <pose>13.95 10 1.5 0 0 1.5708</pose></include>
+
+    <!-- 核心标识1: 核心室西墙内侧, 面朝东 -->
+    <include><uri>model://disaster_sign</uri><name>sign_core_01</name>
+      <pose>16.05 17.5 1.5 0 0 1.5708</pose></include>
+
+    <!-- 核心标识2: 核心室东墙内侧, 面朝西 -->
+    <include><uri>model://disaster_sign</uri><name>sign_core_02</name>
+      <pose>25.95 19 1.5 0 0 -1.5708</pose></include>
+
+    <!-- 核心标识3: 核心室北墙内侧, 面朝南 -->
+    <include><uri>model://disaster_sign</uri><name>sign_core_03</name>
+      <pose>21 20.05 1.5 0 0 0</pose></include>
+
+    <!-- ============ 地面标线 (转弯引导) ============ -->
+    <!-- 入口→东走廊 -->
+    <model name="line_entry"><static>true</static>
+      <link name="l"><visual name="lv"><geometry><box><size>0.06 5 0.005</size></box></geometry>
+        <material><ambient>0.9 0.85 0.1 1</ambient><diffuse>1 0.95 0.2 1</diffuse></material></visual></link>
+      <pose>7 2.5 0.01 0 0 0</pose></model>
+
+    <!-- 东走廊直行 -->
+    <model name="line_corridor_ew"><static>true</static>
+      <link name="l"><visual name="lv"><geometry><box><size>18 0.06 0.005</size></box></geometry>
+        <material><ambient>0.9 0.85 0.1 1</ambient><diffuse>1 0.95 0.2 1</diffuse></material></visual></link>
+      <pose>13 6 0.01 0 0 0</pose></model>
+
+    <!-- 北走廊直行 -->
+    <model name="line_corridor_ns"><static>true</static>
+      <link name="l"><visual name="lv"><geometry><box><size>0.06 6 0.005</size></box></geometry>
+        <material><ambient>0.9 0.85 0.1 1</ambient><diffuse>1 0.95 0.2 1</diffuse></material></visual></link>
+      <pose>20 13 0.01 0 0 0</pose></model>
+
+  </world>
+</sdf>

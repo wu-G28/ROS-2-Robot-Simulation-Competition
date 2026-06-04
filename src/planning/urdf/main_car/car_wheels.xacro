@@ -1,50 +1,75 @@
-<?xml version="1.0"?>
+<!-- 车轮 -->
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:macro name="wheel_inertial" params="mass radius width">
-    <inertial>
-      <mass value="${mass}"/>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <inertia
-        ixx="${mass * radius * radius / 2.0}"
-        ixy="0"
-        ixz="0"
-        iyy="${mass * (3.0 * radius * radius + width * width) / 12.0}"
-        iyz="0"
-        izz="${mass * (3.0 * radius * radius + width * width) / 12.0}"/>
-    </inertial>
-  </xacro:macro>
+    <!-- 车轮尺寸 -->
+    <xacro:property name="wheel_radius" value="${car_height / 2.0 + wheel_joint_z + ground_height}"/>
+    <xacro:property name="wheel_width" value="0.3"/>
 
-  <xacro:macro name="photo_wheel" params="name parent x y z radius width">
-    <link name="${name}_wheel_link">
-      <visual>
-        <origin xyz="0 0 0" rpy="${pi / 2.0} 0 0"/>
-        <geometry>
-          <cylinder radius="${radius}" length="${width}"/>
-        </geometry>
-        <material name="mat_black"/>
-      </visual>
-      <visual>
-        <origin xyz="0 0 0.001" rpy="${pi / 2.0} 0 0"/>
-        <geometry>
-          <cylinder radius="${radius * 0.62}" length="${width + 0.004}"/>
-        </geometry>
-        <material name="mat_blue"/>
-      </visual>
-      <collision>
-        <origin xyz="0 0 0" rpy="${pi / 2.0} 0 0"/>
-        <geometry>
-          <cylinder radius="${radius}" length="${width}"/>
-        </geometry>
-      </collision>
-      <xacro:wheel_inertial mass="0.20" radius="${radius}" width="${width}"/>
-    </link>
+    <!-- 车轮偏移量 -->
+    <xacro:property name="wheel_joint_x" value="${car_length / 2.0 - 0.4}"/>
+    <xacro:property name="wheel_joint_y" value="${car_width / 2.0 + wheel_width/ 2.0 + 0.1}"/>
+    <xacro:property name="wheel_joint_z" value="-0.2"/>
 
-    <joint name="${name}_wheel_joint" type="continuous">
-      <parent link="${parent}"/>
-      <child link="${name}_wheel_link"/>
-      <origin xyz="${x} ${y} ${z}" rpy="0 0 0"/>
-      <axis xyz="0 1 0"/>
-      <dynamics damping="0.05" friction="0.1"/>
-    </joint>
-  </xacro:macro>
+    <!-- 颜色 -->
+    <material name="black">
+        <color rgba="0.0 0.0 0.0 0.7"/>
+    </material>
+
+    <!-- 车轮几何 -->
+    <xacro:macro name="wheel_geometry" params="wheel_name">
+        <link name="${wheel_name}">
+            <visual>
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+                </geometry>
+                <origin rpy="${PI / 2.0} 0.0 0.0"/>
+                <material name="black"/>
+            </visual>
+        </link>
+    </xacro:macro>
+
+    <!-- 后轮函数 -->
+    <xacro:macro name="wheel_rear_func" params="wheel_name left_flag">
+        <!-- 车轮几何 -->
+        <xacro:wheel_geometry wheel_name="${wheel_name}"/>
+
+        <!-- 车轮关联到base_link -->
+        <joint name="${wheel_name}_rolling" type="continuous">
+            <parent link="base_link"/>
+            <child link="${wheel_name}"/>
+            <origin xyz="${-wheel_joint_x} ${wheel_joint_y * left_flag} ${wheel_joint_z}"/>
+            <axis xyz="0 1 0"/>
+        </joint>
+    </xacro:macro>
+
+    <!-- 前轮函数 -->
+    <xacro:macro name="wheel_front_func" params="wheel_name left_flag">
+        <!-- 车轮几何 -->
+        <xacro:wheel_geometry wheel_name="${wheel_name}"/>
+
+        <!-- 转向节几何 -->
+        <link name="${wheel_name}_steering_knuckle"/>
+
+        <!-- 转向节关联到base_link -->
+        <joint name="${wheel_name}_turning" type="revolute">
+            <parent link="base_link"/>
+            <child link="${wheel_name}_steering_knuckle"/>
+            <origin xyz="${wheel_joint_x} ${wheel_joint_y * left_flag} ${wheel_joint_z}"/>
+            <axis xyz="0 0 1"/>
+            <limit effort="0.0" velocity="0.0" lower="-${PI / 6.0}" upper="${PI / 6.0}" />
+        </joint>
+
+        <!-- 车轮关联到转向节 -->
+        <joint name="${wheel_name}_rolling" type="continuous">
+            <parent link="${wheel_name}_steering_knuckle"/>
+            <child link="${wheel_name}"/>
+            <origin xyz="0 0 0"/>
+            <axis xyz="0 1 0"/>
+        </joint>
+    </xacro:macro>
+
+    <!-- 生成4个车轮 -->
+    <xacro:wheel_front_func wheel_name="left_front" left_flag="1"/>
+    <xacro:wheel_front_func wheel_name="right_front" left_flag="-1"/>
+    <xacro:wheel_rear_func wheel_name="left_rear" left_flag="1"/>
+    <xacro:wheel_rear_func wheel_name="right_rear" left_flag="-1"/>
 </robot>
