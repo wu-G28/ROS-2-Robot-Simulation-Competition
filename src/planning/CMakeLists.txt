@@ -69,7 +69,7 @@ add_subdirectory(src/move_cmd)
 
 # 安装辅助目录
 install(DIRECTORY
-  ../config launch urdf rviz worlds models
+  ../config launch urdf rviz world gazebo
   DESTINATION share/${PROJECT_NAME})
 
 if(BUILD_TESTING)

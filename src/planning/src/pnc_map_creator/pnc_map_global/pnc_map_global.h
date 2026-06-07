@@ -5,10 +5,15 @@
 
 namespace Planning
 {
-    class PNCMapGlobal : public PNCMapCreatorBase
+    class PNCMapGlobal : public PNCMapCreatorBase //全局地图
     {
     public:
         PNCMapGlobal();
+        PNCMap create_pnc_map(); //创建pnc地图
+
+    private:
+        void init_pnc_map(); //初始化pnc地图
+        void draw_straight_x(const double &lengtg, const double &plus_flag, const double &ration = 1.0); //沿x轴方向画图
 
     };
 }//namespace Planning

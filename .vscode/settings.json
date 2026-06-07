@@ -46,5 +46,6 @@
     "/opt/ros/humble/local/lib/python3.10/dist-packages"
   ],
   "ROS2.distro": "humble",
-  "remote.autoForwardPortsFallback": 0
+  "remote.autoForwardPortsFallback": 0,
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true
 }
